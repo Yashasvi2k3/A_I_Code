@@ -1,0 +1,43 @@
+from collections import defaultdict
+
+class Graph:
+def _init_(self, vertices):
+self.graph = defaultdict(list)
+self.V = vertices
+
+def addEdge(self, u, v):
+self.graph[u].append(v)
+
+def topologicalSortUtil(self, v, visited, stack):
+visited[v] = True
+for i in self.graph[v]:
+if visited[i] == False:
+self.topologicalSortUtil(i, visited, stack)
+stack.insert(0, v)
+
+def topologicalSort(self):
+visited = [False]*self.V
+stack =[]
+for i in range(self.V):
+if visited[i] == False:
+self.topologicalSortUtil(i, visited, stack)
+
+return stack
+
+mapping = {2:0, 3:1, 5:2, 7:3, 8:4, 9:5, 10:6, 11:7}
+reverse_mapping = {v: k for k, v in mapping.items()}
+
+g = Graph(len(mapping))
+g.addEdge(mapping[5], mapping[11])
+g.addEdge(mapping[7], mapping[8])
+g.addEdge(mapping[3], mapping[8])
+g.addEdge(mapping[7], mapping[11])
+g.addEdge(mapping[11], mapping[2])
+g.addEdge(mapping[11], mapping[9])
+g.addEdge(mapping[8], mapping[9])
+g.addEdge(mapping[9], mapping[10])
+
+print("Topological Sort of the given graph is")
+result = g.topologicalSort()
+result = [reverse_mapping[i] for i in result]
+print(result)

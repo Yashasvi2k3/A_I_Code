@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+bool isSafe(int node, vector<vector<int>>& graph, vector<int>& coloring, int color) {
+for (int neighbor : graph[node]) {
+if (coloring[neighbor] == color) {
+return false;
+}
+}
+return true;
+}
+bool graphColoring(vector<vector<int>>& graph, int numColors, vector<int>& coloring, int node)
+{
+int numNodes = graph.size();
+if (node == numNodes) {
+return true; // All nodes have been colored
+}
+for (int color = 0; color < numColors; color++) {
+
+
+
+if (isSafe(node, graph, coloring, color)) {
+coloring[node] = color;
+if (graphColoring(graph, numColors, coloring, node + 1)) {
+return true;
+}
+coloring[node] = -1; // Backtrack
+}
+}
+return false;
+}
+int main() {
+vector<vector<int>> graph = {
+{1, 2},
+{0, 2, 3},
+{0, 1, 3},
+{1, 2}
+};
+int numColors = 3;
+int numNodes = graph.size();
+vector<int> coloring(numNodes, -1);
+if (graphColoring(graph, numColors, coloring, 0)) {
+cout << "Valid Coloring: ";
+for (int color : coloring) {
+cout << color << " ";
+}
+cout << endl;
+} else {
+cout << "No valid coloring exists." << endl;
+}
+return 0;
+}

@@ -1,0 +1,56 @@
+import pandas as pd
+
+data = {'Date': ['20 Nov', '20 Nov', '20 Nov', '21 Nov',
+'21 Nov'],
+'Apps_Opened': [['word', 'youtube', 'whatsapp',
+'instagram'],
+['youtube', 'whatsapp', 'instagram'],
+['word', 'instagram', 'whatsapp'],
+['youtube', 'whatsapp', 'instagram'],
+['whatsapp', 'instagram']]}
+
+df = pd.DataFrame(data)
+
+# i) Number of times the user opened WhatsApp as
+his first time of the day
+
+def whatsapp_first_count(df):
+first_whatsapp_count =
+df[df['Apps_Opened'].apply(lambda x: 'whatsapp' in
+x and x.index('whatsapp') == 0)].shape[0]
+return first_whatsapp_count
+
+# ii) Probability of opening WhatsApp as his first
+choice
+
+def whatsapp_first_probability(df):
+total_days = df['Date'].nunique()
+first_whatsapp_count = whatsapp_first_count(df)
+probability = first_whatsapp_count / total_days
+
+return probability
+
+# iii) Probability of opening WhatsApp as his second
+choice if he has opened Instagram as his first choice
+of that day
+
+def
+whatsapp_second_given_instagram_first_probability(
+df):
+instagram_first_count =
+df[df['Apps_Opened'].apply(lambda x: 'instagram' in
+x and x.index('instagram') == 0)].shape[0]
+whatsapp_second_given_instagram_count =
+df[df.apply(lambda x: 'instagram' in
+x['Apps_Opened'] and 'whatsapp' in
+x['Apps_Opened'] and
+x['Apps_Opened'].index('whatsapp') == 1,
+axis=1)].shape[0]
+
+if instagram_first_count == 0:
+return 0
+else:
+probability =
+whatsapp_second_given_instagram_count /
+instagram_first_count
+return probability

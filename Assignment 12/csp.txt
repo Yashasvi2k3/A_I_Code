@@ -1,0 +1,118 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+public class EightQueensCSPUserInput {
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+// Define variables and their domains based on user input
+List<Integer> var1Domain = getUserInputDomain("Variable 1", 
+scanner);
+List<Integer> var2Domain = getUserInputDomain("Variable 2", 
+scanner);
+// Create a list of variables
+Variable var1 = new Variable("Variable 1", var1Domain);
+Variable var2 = new Variable("Variable 2", var2Domain);
+List<Variable> variables = new ArrayList<>();
+variables.add(var1);
+variables.add(var2);
+// Define constraints
+Constraint constraint = new Constraint() {
+@Override
+public boolean isSatisfied(List<Variable> variables) {
+Integer var1Value = variables.get(0).getValue();
+Integer var2Value = variables.get(1).getValue();
+// Check for null values
+if (var1Value == null || var2Value == null) {
+return true; // No constraint violation if any value is null
+}
+// Define your constraint logic here
+return !var1Value.equals(var2Value);
+}
+};
+// Create a CSP instance
+CSP csp = new CSP(variables, constraint);
+// Solve the CSP using backtracking
+if (solveCSP(csp)) {
+System.out.println("Solution found:");
+for (Variable variable : csp.getVariables()) {
+System.out.println(variable.getName() + ": " + 
+variable.getValue());
+}
+} else {
+System.out.println("No solution found.");
+}
+}
+private static List<Integer> getUserInputDomain(String varName, 
+Scanner scanner) {
+System.out.print("Enter domain size for " + varName + ": ");
+int domainSize = scanner.nextInt();
+List<Integer> domain = new ArrayList<>();
+System.out.println("Enter values for " + varName + " domain:");
+for (int i = 0; i < domainSize; i++) {
+System.out.print("Value " + (i + 1) + ": ");
+domain.add(scanner.nextInt());
+}
+return domain;
+}
+// Backtracking solver
+public static boolean solveCSP(CSP csp) {
+return backtrack(csp, 0);
+}
+private static boolean backtrack(CSP csp, int index) {
+if (index == csp.getVariables().size()) {
+return true; // All variables assigned
+}
+Variable variable = csp.getVariables().get(index);
+for (int value : variable.getDomain()) {
+variable.setValue(value);
+if (csp.isConsistent()) {
+if (backtrack(csp, index + 1)) {
+return true;
+}
+}
+variable.setValue(null); // Backtrack
+}
+return false;
+}
+}
+class Variable {
+private String name;
+private List<Integer> domain;
+private Integer value;
+public Variable(String name, List<Integer> domain) {
+this.name = name;
+this.domain = domain;
+this.value = null;
+}
+public String getName() {
+return name;
+}
+public List<Integer> getDomain() {
+
+return domain;
+}
+public Integer getValue() {
+return value;
+}
+public void setValue(Integer value) {
+this.value = value;
+}
+}
+class CSP {
+private List<Variable> variables;
+private Constraint constraint;
+public CSP(List<Variable> variables, Constraint constraint) {
+this.variables = variables;
+this.constraint = constraint;
+}
+public List<Variable> getVariables() {
+return variables;
+}
+
+public boolean isConsistent() {
+return constraint.isSatisfied(variables);
+}
+}
+interface Constraint {
+boolean isSatisfied(List<Variable> variables);
+}

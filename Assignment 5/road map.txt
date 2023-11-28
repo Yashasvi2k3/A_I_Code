@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <map>
+
+using namespace std;
+
+// Define a structure to represent a road with sensory inputs
+struct Road {
+    string destination;
+    int distance;       // Distance in kilometers
+    int time;           // Travel time in minutes
+    int traffic;        // Traffic congestion level (1-5, 5 being heavy traffic)
+    int roadQuality;    // Road quality (1-5, 5 being excellent)
+    int scenicRating;   // Scenic rating (1-5, 5 being very scenic)
+};
+
+// Define a map to represent the road map of your state/city
+map<string, vector<Road>> roadMap;
+
+// Function to perform Breadth-First Search (BFS)
+void bfs(const string& start, const string& goal) {
+    queue<string> q;
+    map<string, bool> visited;
+
+    q.push(start);
+    visited[start] = true;
+
+    while (!q.empty()) {
+        string current = q.front();
+        q.pop();
+
+        cout << current << " -> ";
+
+        if (current == goal) {
+            cout << "Goal reached!" << endl;
+            return;
+        }
+
+        for (const Road& road : roadMap[current]) {
+            if (!visited[road.destination]) {
+                q.push(road.destination);
+                visited[road.destination] = true;
+            }
+        }
+    }
+
+    cout << "Goal not found." << endl;
+}
+
+// Function to perform Depth-First Search (DFS)
+void dfs(const string& current, const string& goal, map<string, bool>& visited) {
+    visited[current] = true;
+    cout << current << " -> ";
+
+    if (current == goal) {
+        cout << "Goal reached!" << endl;
+        return;
+    }
+
+    for (const Road& road : roadMap[current]) {
+        if (!visited[road.destination]) {
+            dfs(road.destination, goal, visited);
+        }
+    }
+}
+
+int main() {
+    // Populate the road map with data
+    Road road1 = {"City1", 10, 20, 3, 4, 2};
+    Road road2 = {"City2", 15, 25, 5, 3, 1};
+    Road road3 = {"City3", 12, 22, 2, 5, 4};
+
+    roadMap["Start"] = {road1, road2};
+    roadMap["City1"] = {road2, road3};
+    roadMap["City2"] = {road3};
+    roadMap["City3"] = {};
+
+    string startCity = "Start";
+    string goalCity = "City3";
+
+    cout << "BFS traversal: " << endl;
+    bfs(startCity, goalCity);
+
+    cout << "\nDFS traversal: " << endl;
+    map<string, bool> visitedDFS;
+    dfs(startCity, goalCity, visitedDFS);
+
+    return 0;
+}
