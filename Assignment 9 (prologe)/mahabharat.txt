@@ -1,0 +1,15 @@
+father(pandu, bhima).
+father(pandu, arjuna).
+father(pandu, nakula).
+father(pandu, sahadeva).
+
+grandmother(satyavati, X) :- mother(satyavati, Y), parent(Y, X).
+parent(X, Y) :- father(X, Y).
+parent(X, Y) :- mother(X, Y).
+mother(kunti, yudhishthira).
+mother(kunti, bhima).
+mother(kunti, arjuna).
+mother(kunti, nakula).
+mother(kunti, sahadeva).
+
+grandfather(X, Y) :- father(X, Z), parent(Z, Y).

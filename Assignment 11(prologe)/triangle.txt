@@ -1,0 +1,21 @@
+% Define the sides of a triangle
+side(a, X). % Side opposite vertex A
+side(b, Y). % Side opposite vertex B
+side(c, Z). % Side opposite vertex C
+
+% Define the angles of a triangle
+angle(a, X). % Angle at vertex A
+angle(b, Y). % Angle at vertex B
+angle(c, Z). % Angle at vertex C
+
+% Rule for an equilateral triangle
+equilateral_triangle :-
+side(a, X), side(b, X), side(c, X),
+angle(a, Y), angle(b, Y), angle(c, Y).
+
+% Rule to check if angles B and C are equal
+
+equal(B, C) :-
+equilateral_triangle,
+angle(b, B),
+angle(c, C).

@@ -1,0 +1,7 @@
+% Calculate the area of a rectangle
+rectangle_area(Length, Width, Area) :-
+Area is Length * Width.
+
+% Calculate the volume of a sphere
+sphere_volume(Radius, Volume) :-
+Volume is (4/3) * 3.14159265359 * Radius * Radius * Radius.

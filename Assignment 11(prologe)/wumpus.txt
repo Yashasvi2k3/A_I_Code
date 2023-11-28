@@ -1,0 +1,12 @@
+% Define the pits
+pit(3, 1).
+pit(3, 3).
+pit(4, 4).
+
+% Define the safe predicate for a grid location
+safe(1, 1). % The start point is always safe
+safe(X, Y) :-
+% Check if the location itself is not a pit
+\+ pit(X, Y),
+% Check if there are no pits in adjacent grid locations
+\+ (pit(X-1, Y); pit(X+1, Y); pit(X, Y-1); pit(X, Y+1)).

@@ -1,0 +1,13 @@
+% Recursive predicate to print numbers from 1 to N
+print_numbers(0).
+print_numbers(N) :-
+N > 0,
+write(N), write(' '),
+N1 is N - 1,
+print_numbers(N1).
+
+% Main program to read N from the keyboard and start the recursion
+main :-
+write('Enter a number (N): '),
+read(N),
+print_numbers(N).

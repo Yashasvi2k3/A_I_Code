@@ -1,0 +1,25 @@
+% Predicate to read `n` elements into a list
+read_n_elements(0, []) :- !.
+read_n_elements(N, [X | List]) :-
+write('Enter a number: '),
+read(X),
+N1 is N - 1,
+read_n_elements(N1, List).
+
+% Predicate to print even numbers from a list
+print_even_numbers([]).
+print_even_numbers([X | Rest]) :-
+(X mod 2 =:= 0 ->
+
+write(X), write(' '),
+print_even_numbers(Rest);
+print_even_numbers(Rest)
+).
+
+% Main program to read `n` elements and print even numbers
+main :-
+write('Enter the number of elements: '),
+read(N),
+read_n_elements(N, List),
+write('Even numbers in the list: '),
+print_even_numbers(List).
